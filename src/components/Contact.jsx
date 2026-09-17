@@ -10,21 +10,42 @@ export default function Contact() {
   const [status, setStatus] = useState('idle') // idle | sending | sent
   const [showToast, setShowToast] = useState(false)
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setStatus('sending')
-    // No backend or email service is connected yet. This simulates the
-    // interaction so the form can be wired up to a real service later
-    // (e.g. an API route, Formspree, or a serverless function).
-    setTimeout(() => {
+ const handleSubmit = async (e) => {
+  e.preventDefault()
+  setStatus('sending')
+
+  const form = e.currentTarget
+  const formData = new FormData(form)
+
+  formData.append('access_key', import.meta.env.VITE_WEB3FORMS_KEY)
+  formData.append('subject', 'New Portfolio Contact Message')
+  formData.append('from_name', 'Ibrahim Sellami Portfolio')
+
+  try {
+    const response = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: formData,
+    })
+
+    const data = await response.json()
+
+    if (data.success) {
       setStatus('sent')
       setShowToast(true)
-      e.target.reset()
+      form.reset()
       setProjectType(projectTypes[0])
+
       setTimeout(() => setShowToast(false), 4500)
       setTimeout(() => setStatus('idle'), 1200)
-    }, 800)
+    } else {
+      throw new Error(data.message)
+    }
+  } catch (error) {
+    console.error(error)
+    setStatus('idle')
+    alert('Something went wrong. Please try again.')
   }
+}
 
   return (
     <section id="contact" className="relative w-full max-w-[1440px] mx-auto px-gutter-mobile lg:px-margin py-space-2xl">
