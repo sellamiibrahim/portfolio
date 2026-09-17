@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Ibrahim Sellami — Portfolio
 
 A freelance developer portfolio built with React, Vite, Tailwind CSS, and Framer Motion.
@@ -46,3 +47,6 @@ then replace the `handleSubmit` logic in `src/components/Contact.jsx`.
 
 Colors, type scale, and spacing tokens follow the "Terminal Obsidian" design
 system, configured in `tailwind.config.js`.
+=======
+# portfolio
+>>>>>>> 973c92e207ac84f5975a2cc09bfecb3f48bffcbe
